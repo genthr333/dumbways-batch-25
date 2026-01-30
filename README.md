@@ -161,33 +161,30 @@ To simplify the connection process, I created a local SSH Config file. This conf
 
 
 ## 4. Private Docker Registry Deployment
-Deploy Docker Registry Private on this server
-Push your image into Your Own Docker Registry
-reverse proxy for docker registry was registry.gen.studentdumbways.my.id
 
 
-### langkah 1
+### install docker
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+<p alig"center"> <img src="3/docker.png" widthn=="700" alt="command"> </p>
 
 
+<p alig"center"> <img src="3/adocker.png" widthn=="700" alt="command"> </p>
 
 
-### langkah 2
+automated the installation of the Docker Engine across all servers using an Ansible Playbook. The installation process was specifically configured to integrate with the finaltask-gen1 user, including adding the user to the docker group. This allows for running container commands without requiring root privileges, adhering to security best practices.
 
 
-<p align="center">
-  <img src="" width="48%" />
-  <img src="" width="48%" />
-</p>
+### install registry on top docker
 
 
+<p alig"center"> <img src="4/registryr.png" widthn=="700" alt="command"> </p>
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+To manage custom application images, I deployed a Private Docker Registry as a containerized service. Using Ansible, the registry was configured to run on port 5000 with persistent storage. This private registry serves as the central hub for storing and distributing built images (Frontend and Backend) across the staging and production environments, ensuring faster and more secure deployment cycles.
 
 
+<p alig"center"> <img src="5/dockercon.png" widthn=="700" alt="command"> </p>
 
 
 ## 5. Database & Application Orchestration
