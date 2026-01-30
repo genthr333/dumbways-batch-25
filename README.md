@@ -1,10 +1,10 @@
 # Dumbmerch deployment
 
 
-## 1 Server Provisioning & Initial Configuration
+## 1 server provisioning & initial configuration
 
 
-This section covers the initial environment preparation and server provisioning.
+this section covers the initial environment preparation and server provisioning.
 
 
 ### server provisioning
@@ -13,21 +13,21 @@ This section covers the initial environment preparation and server provisioning.
 <p alig"center"> <img src="1/1.png" widthn=="700" alt="command"> </p>
 
 
-For this final task, the infrastructure is deployed using Biznet GIO NEO Lite with the following instances:
+for this final task, the infrastructure is deployed using biznet giot neo lite with the following instances:
 
-App Server: Dedicated for running the main application services.
+- app Server: dedicated for running the main application services.
 
-Gateway Server: Dedicated as the entry point for traffic (Reverse Proxy).
+- gateway server: dedicated as the entry point for traffic (reverse proxy).
 
 
 ### install wsl and env
 
 
-To manage the infrastructure, I configured a local environment using WSL (Windows Subsystem for Linux) and a dedicated Python Virtual Environment for Ansible:
+to manage the infrastructure, i configured a local environment using WSL (windows subsystem for linux) and a dedicated python virtual environment for ansible:
 
 - WSL Installation: bash wsl --install
 
-- Environment & Ansible Setup:
+- environment & ansible setup:
 
     sudo apt update && sudo apt install python3-venv -y
 
@@ -47,28 +47,28 @@ To manage the infrastructure, I configured a local environment using WSL (Window
 <p alig"center"> <img src="1/ssh.PNG" widthn=="700" alt="command"> </p>
 
 
-Security is managed by implementing SSH Key based authentication. I generated a pair of keys locally and attach the public key to the ~/.ssh/authorized_keys file on both the App and Gateway servers to enable secure, passwordless access. The private key was then integrated into the WSL environment with proper permissions to ensure a seamless and secure connection for automation.
+security is managed by implementing ssh key based authentication. i generated a pair of keys locally and attach the public key to the ~/.ssh/authorized_keys file on both the app and gateway servers to enable secure, passwordless access. the private key was then integrated into the WSL environment with proper permissions to ensure a seamless and secure connection for automation.
 
 
-### Create inventory file for playbook
+### create inventory file for playbook
 
 
 <p alig"center"> <img src="1/1b.png" widthn=="700" alt="command"> </p>
 
 
-To streamline the automation process, I created an inventory file to map the server roles and IP addresses. This inventory acts as the primary navigation for Ansible to execute tasks. Following this, I developed a structured Ansible Playbook designed to automate system updates, security hardening, and package installations across all provisioned instances.
+to streamline the automation process, i created an inventory file to map the server roles and ip addresses. this inventory acts as the primary navigation for ansible to execute tasks. following this, i developed a structured ansible playbook designed to automate system updates, security hardening, and package installations across all provisioned instances.
 
 
 <p alig"center"> <img src="1/1c.png" widthn=="700" alt="command"> </p>
 
 
-## 2 Version Control System (VCS) Setup
+## 2 version control system (VCS) setup
 
 
-### Create a repository on Github
+### create a repository on github
 
 
-The development process began by cloning the provided Frontend (FE) and Backend (BE) repositories into the WSL environment. Then create Staging and Production branches for both repositories to maintain code stability. make the repositories private on GitHub, configured SSH keys for secure authentication.
+the development process began by cloning the provided Frontend (fe) and backend (be) repositories into the WSL environment. then create staging and production branches for both repositories to maintain code stability. make the repositories private on GitHub, configured SSH keys for secure authentication.
 
 
 <p alig"center"> <img src="2/sshgit.PNG" widthn=="700" alt="command"> </p>
@@ -83,7 +83,7 @@ and pushed the local source code to their respective remote repositories.
 </p>
 
 
-### Modify .env file
+### modify .env file
 
 
 <p align="center">
@@ -92,7 +92,7 @@ and pushed the local source code to their respective remote repositories.
 </p>
 
 
-customized the .env files for both services to ensure seamless integration: the Frontend was configured to communicate with the Backend API, and the Backend was linked to the PostgreSQL database.
+customized the .env files for both services to ensure seamless integration: the frontend was configured to communicate with the Backend api, and the backend was linked to the postgresql database.
 
 
 ### Add secrets to repository fe and be
@@ -104,10 +104,10 @@ customized the .env files for both services to ensure seamless integration: the 
 </p>
 
 
-To maintain security, sensitive information such as database credentials and server IPs were not hardcoded; instead, they were stored securely as GitHub Secrets within each repository.
+to maintain security, sensitive information such as database credentials and server ip were not hardcoded; instead, they were stored securely as github secrets within each repository.
 
 
-### Create Workflows file
+### create workflows file
 
 
 <p align="center">
@@ -116,16 +116,16 @@ To maintain security, sensitive information such as database credentials and ser
 </p>
 
 
-To automate the deployment workflow, I implemented GitHub Actions by creating custom workflow files in each repository. These pipelines are triggered upon pushes to the Staging or Production branches, ensuring that every code change is automatically tested, built, and ready for deployment to the servers.
+to automate the deployment workflow, i implemented gitHub actions by creating custom workflow files in each repository. these pipelines are triggered upon pushes to the staging or production branches, ensuring that every code change is automatically tested, built, and ready for deployment to the servers.
 
 
-## 3. Server Hardening & User Management
+## 3. server Hardening & user management
 
 
-### Create new user finaltask-gen1 and hardening
+### create new user finaltask-gen1 and hardening
 
 
-I automated the creation of a new administrative user, finaltask-gen1, across all servers using an Ansible Playbook. This user serves as the primary service account for all deployment tasks. 
+i automated the creation of a new administrative user, finaltask-gen1, across all servers using an ansible playbook. this user serves as the primary service account for all deployment tasks. 
 
 
 <p alig"center"> <img src="3/hardening.png" widthn=="700" alt="command"> </p>
@@ -134,12 +134,13 @@ I automated the creation of a new administrative user, finaltask-gen1, across al
 <p alig"center"> <img src="3/hardeninga.png" widthn=="700" alt="command"> </p>
 
 
-To ensure secure access, the playbook also manages only one SSH key for distribution, allowing the user to log in securely while maintaining proper permission levels.
-To enhance server security, I implemented several network hardening measures via Ansible:
+to ensure secure access, the playbook also manages only one SSH key for distribution, allowing the user to log in securely while maintaining proper permission levels.
 
-- SSH Port Customization: Changed the default SSH port from 22 to 6969 to mitigate brute-force attacks.
+to enhance server security, I implemented several network hardening measures via Ansible:
 
-- Firewall Rules: Configured UFW (Uncomplicated Firewall) to only allow essential traffic. Specifically, I opened ports 3000, 3001, 5000, and 5001 for application access, while explicitly managing other incoming traffic to maintain a strict security posture.
+- ssh port customization: changed the default SSH port from 22 to 6969 to mitigate brute force attacks.
+
+- firewall rules: configured ufw (uncomplicated firewall) to only allow essential traffic. specifically, i opened ports 3000, 3001, 5000, and 5001 for application access, while explicitly managing other incoming traffic to maintain a strict security posture.
 
 
 <p alig"center"> <img src="3/1.png" widthn=="700" alt="command"> </p>
@@ -154,13 +155,13 @@ To enhance server security, I implemented several network hardening measures via
 <p alig"center"> <img src="3/config.png" widthn=="700" alt="command"> </p>
 
 
-To simplify the connection process, I created a local SSH Config file. This configuration maps the hostnames for both the App and Gateway servers, matching the user and custom ports defined in the Ansible Playbook. This setup allows for seamless access using a simple ssh app or ssh gateway command, ensuring consistency between the automation scripts and manual server management.
+to simplify the connection process, i created a local ssh config file. this configuration maps the hostnames for both the app and gateway servers, matching the user and custom ports defined in the ansible playbook. this setup allows for seamless access using a simple ssh app or ssh gateway command, ensuring consistency between the automation scripts and manual server management.
 
 
 <p alig"center"> <img src="3/2a.png" widthn=="700" alt="command"> </p>
 
 
-## 4. Private Docker Registry Deployment
+## 4. private docker registry deployment
 
 
 ### install docker
@@ -172,7 +173,7 @@ To simplify the connection process, I created a local SSH Config file. This conf
 <p alig"center"> <img src="3/adocker.png" widthn=="700" alt="command"> </p>
 
 
-automated the installation of the Docker Engine across all servers using an Ansible Playbook. The installation process was specifically configured to integrate with the finaltask-gen1 user, including adding the user to the docker group. This allows for running container commands without requiring root privileges, adhering to security best practices.
+automated the installation of the docker engine across all servers using an ansible playbook. the installation process was specifically configured to integrate with the finaltask-gen1 user, including adding the user to the docker group. this allows for running container commands without requiring root privileges.
 
 
 ### deploy private registry on top docker
@@ -181,13 +182,13 @@ automated the installation of the Docker Engine across all servers using an Ansi
 <p alig"center"> <img src="4/registry.png" widthn=="700" alt="command"> </p>
 
 
-To manage custom application images, I deployed a Private Docker Registry as a containerized service. Using Ansible, the registry was configured to run on port 5000 with persistent storage. This private registry serves as the central hub for storing and distributing built images (Frontend and Backend) across the staging and production environments, ensuring faster and more secure deployment cycles.
+to manage custom application images, i deployed a private docker registry as a containerized service. using ansible playbook, the registry was configured to run on port 5000 with persistent storage. this private registry serves as the central hub for storing and distributing built images (Frontend and Backend) across the staging and production environments, ensuring faster and more secure deployment cycles.
 
 
 <p alig"center"> <img src="5/dockercon.png" widthn=="700" alt="command"> </p>
 
 
-## 5. Database & Application Orchestration
+## 5. database & application orchestration
 
 
 ### deploy database PostgreSQL
@@ -199,7 +200,7 @@ To manage custom application images, I deployed a Private Docker Registry as a c
 <p alig"center"> <img src="5/1a.png" widthn=="700" alt="command"> </p>
 
 
-I deployed PostgreSQL on the App Server using Docker, exposed on the default port 5432. To ensure data persistence, I configured a Docker Volume mapped to the home directory of the service user (/home/finaltask-gen1/). The database credentials and environment variables were securely managed using GitHub Secrets, ensuring that sensitive data is injected dynamically during the deployment process.
+i deployed PostgreSQL on the app Server using Docker, exposed on the default port 5432. to ensure data persistence, i configured a docker volume mapped to the home directory of the service user (/home/finaltask-gen1/). the database credentials and environment variables were securely managed using GitHub Secrets, ensuring that sensitive data is injected dynamically during the deployment process.
 
 <p alig"center"> <img src="5/dockercon.png" widthn=="700" alt="command"> </p>
 
@@ -216,7 +217,7 @@ I deployed PostgreSQL on the App Server using Docker, exposed on the default por
 <p alig"center"> <img src="5/dockerfile1.png" widthn=="700" alt="command"> </p>
 
 
-For both Frontend and Backend services, I implemented Multi stage Docker Builds. This approach significantly reduces the final image size by separating the build environment from the production runtime. The result is a lightweight, secure, and high-performance container image ready for distribution via the private registry.
+for both frontend and backend services, i implemented multi stage docker builds. this approach significantly reduces the final image size by separating the build environment from the production runtime. The result is a lightweight, secure, and high performance container image ready for distribution via the private registry.
 
 
 ### create workflows on repositories fe and be
@@ -234,21 +235,21 @@ For both Frontend and Backend services, I implemented Multi stage Docker Builds.
 <p alig"center"> <img src="4/2a.png" widthn=="700" alt="command"> </p>
 
 
-I created dedicated deployment workflows (deploy-fe.yml and deploy-be.yml) within GitHub Actions to orchestrate the integration:
+i created dedicated deployment workflows (deployfe.yml and deploy.yml) within github actions to orchestrate the integration.
 
-The workflow follows these critical steps:
+the workflow follows these critical steps:
 
-- Repository Pull & Image Build: Automatically pulls the latest code and builds the image using the multi-stage process.
+- repository pull & Image build: automatically pulls the latest code and builds the image using the multi stage process.
 
-- Database Migration: The Backend pipeline includes a migration step to ensure the PostgreSQL schema stays synchronized with the latest code changes.
+- database migration: the backend pipeline includes a migration step to ensure the postgresql schema stays synchronized with the latest code changes.
 
-- Secure Deployment: The pipeline connects to the server via SSH, pulls the newly built image from the Private Docker Registry, and redeploys the application containers.
+- secure deployment: the pipeline connects to the server via ssh, pulls the newly built image from the private docker registry, and redeploys the application containers.
 
-- Integrity Check: The process concludes by verifying the container status using docker ps to ensure all services are running correctly in the Staging and Production environments.
+- integrity check: the process concludes by verifying the container status using docker ps to ensure all services are running correctly in the staging and production environments.
 
-- Frontend: Configured to integrate seamlessly with the Backend API.
+- frontend: configured to integrate seamlessly with the Backend api.
 
-- Backend: Includes an automated Database Migration step to ensure the PostgreSQL schema stays synchronized with the application code. The deployment was first pushed and verified on the Staging branch, followed by a status check using docker ps to ensure all containers were running optimally.
+- backend: includes an automated database migration step to ensure the postgresql schema stays synchronized with the application code. the deployment was first pushed and verified on the staging branch, followed by a status check using docker ps to ensure all containers were running optimally.
 
 
 <p alig"center"> <img src="5/dockercon.png" widthn=="700" alt="command"> </p>
@@ -269,20 +270,34 @@ test register and login
 check on db user.
 
 
-
 ## 6. CI/CD Pipeline Integration
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+### check pipeline branch staging on github actions
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+after pushing the code to the staging branch, i monitored the execution of the github actions pipeline to ensure deployment integrity. this step is crucial to verify that every stage starting from code linting, building the multi stage docker images, pushing to the private registry, to the final remote deployment is executed without errors.
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+<p alig"center"> <img src="2/3d.png" widthn=="700" alt="command"> </p>
 
 
-<p alig"center"> <img src="" widthn=="700" alt="command"> </p>
+<p alig"center"> <img src="6/pipeline.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/pipeline1.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="2/3f.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="2/3e.png" widthn=="700" alt="command"> </p>
+
+
+the deployment is considered successful only when the pipeline returns a "green" status (passed) for all jobs. this visual confirmation in github actions serves as the first gate of validation, ensuring that the staging environment is running the latest stable version of the application before any further testing or promotion to production.
+
+
+
 
 
 di sini saya menggunakan cloudflare untuk https.
