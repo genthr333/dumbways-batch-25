@@ -270,7 +270,13 @@ test register and login
 <p alig"center"> <img src="5/db.png" widthn=="700" alt="command"> </p>
 
 
-check on db user.
+check db user
+
+
+<p alig"center"> <img src="4/registeryfebe.png" widthn=="700" alt="command"> </p>
+
+
+check image on private registry
 
 
 ## 6. CI/CD Pipeline Integration
@@ -440,7 +446,13 @@ by merging and pushing to the Production branch, I ensured that the latest stabl
 <p alig"center"> <img src="7/prome/scrape.png" widthn=="700" alt="command"> </p>
 
 
-### install grafana
+<p alig"center"> <img src="7/prome/target.png" widthn=="700" alt="command"> </p>
+
+
+bisa cek prometheus dengan cara command ini untuk melihat metrics dari node exporter atau liat target health di prometheusnya langusung
+
+
+### install grafana and set up
 
 
 <p alig"center"> <img src="7/graf/grafana.png" widthn=="700" alt="command"> </p>
@@ -449,22 +461,61 @@ by merging and pushing to the Production branch, I ensured that the latest stabl
 <p alig"center"> <img src="7/graf/grafana1.png" widthn=="700" alt="command"> </p>
 
 
+<p alig"center"> <img src="7/graf/grafana1.png" widthn=="700" alt="command"> </p>
+
+
+tambahakan data source dari prometheus
+
+
 ### set up basic auth on prometheus
 
 
 <p alig"center"> <img src="7/prome/auth.png" widthn=="700" alt="command"> </p>
 
 
+untuk menambahkan auth masukan sudo apt update && sudo apt install apache-utils -y di server gateway
+
+
 <p alig"center"> <img src="7/prome/auth1.png" widthn=="700" alt="command"> </p>
+
+
+setelah proses instalasi selesai masukan command sudo htpasswd -c /.etc/nginx/htpasswd admin(username) dan masukan password
 
 
 <p alig"center"> <img src="7/prome/auth2.png" widthn=="700" alt="command"> </p>
 
 
+tambahkan 
+auth_basic "admin Area";
+auth_basic_user_file /.etc/nginx/.htpasswd admin;
+di file rproxy.yml bagian prometheus
+
+
 <p alig"center"> <img src="7/prome/auth3.png" widthn=="700" alt="command"> </p>
+
+
+auth basic sudah berhasil ditambahkan pada prometheus 
 
 
 ### set up grafana dashboard and alert
 
 
+<p alig"center"> <img src="8/graf/dashboard.png" widthn=="700" alt="command"> </p>
 
+
+import dashboard dari node exporter full lalu edit sesuai keinginan
+
+
+<p alig"center"> <img src="8/graf/1.png" widthn=="700" alt="command"> </p>
+masuk ke bot father di telegram dan bikin bot dengan masukin /newbot
+
+<p alig"center"> <img src="8/graf/1a.png" widthn=="700" alt="command"> </p>
+/start pada bot baru yang dibikin lalu nanti akan mendapat kan link api dan token bot
+<p alig"center"> <img src="8/graf/1c.png" widthn=="700" alt="command"> </p>
+akses link api telegram menggunakan browser dan copy id chat
+<p alig"center"> <img src="8/graf/2.png" widthn=="700" alt="command"> </p>
+buat contact point pada menu alerting di grafana. pilih telegram, masukan token, dan id yang sudah di dapatkan
+<p alig"center"> <img src="8/graf/2.png" widthn=="700" alt="command"> </p>
+buat alert rules
+<p alig"center"> <img src="8/graf/2.png" widthn=="700" alt="command"> </p>
+masukan query dan kondisi untuk alertnya
