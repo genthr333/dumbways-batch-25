@@ -309,14 +309,126 @@ after pushing the code to the staging branch, i monitored the execution of the g
 the deployment is considered successful only when the pipeline returns a "green" status (passed) for all jobs. this visual confirmation in github actions serves as the first gate of validation, ensuring that the staging environment is running the latest stable version of the application before any further testing or promotion to production.
 
 
+## 7. Security (SSL/TLS) & Domain Management
 
 
-
-di sini saya menggunakan cloudflare untuk https.
-Final task
+### install certbot
 
 
-## 7. Monitoring & Alerting System
+<p alig"center"> <img src="8/certbot.png" widthn=="700" alt="command"> </p>
 
 
-## 8. Security (SSL/TLS) & Domain Management
+to ensure secure communication across all services, i implemented certbot on the gateway server using ansible. i manually executed the certificate generation process to obtain privkey.pem and fullchain.pem. these certificates enable end to end encryption for all subdomains, providing a secure https environment for both development and production stages.
+
+
+### install nginx
+
+
+<p alig"center"> <img src="8/nginx.png" widthn=="700" alt="command"> </p>
+
+
+i deployed and configured nginx as the primary gateway using an ansible playbook. 
+
+
+### create domain using cloudflare
+
+
+create domain using cloudflare: 
+
+- gen.studentdumbways.my.id(fe production)
+- api.gen.studentdumbways.my.id(be production)
+- staging.gen.studentdumbways.my.id(fe staging)
+- api.staging.gen.studentdumbways.my.id(be staging)
+- exporter.gen.studentdumbways.my.id
+- prom.gen.studentdumbways.my.id
+- monitoring.gen.studentdumbways.my.id(grafana)
+
+
+### set up reverse proxy 
+
+
+<p alig"center"> <img src="8/2.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2a.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2b.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2c.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2d.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2e.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2f.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2g.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2h.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2i.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2j.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2k.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="8/2l.png" widthn=="700" alt="command"> </p>
+
+
+the nginx configuration was optimized for high performance and security. every server block is configured to listen on port 443 with ssl enabled. i also implemented http/2 to improve loading speeds and ensured that all non https traffic is automatically redirected to a secure connection, maintaining a robust security posture across the entire infrastructure.
+
+
+## 8. push to production branch
+
+
+after verifying all services in the staging environment, i performed push of the updated workflows (deployfe and deploy(be)) and the entire source code to the production branch. this action triggers the high level ci/cd pipeline, initiating the automated build and deployment process for the live environment. 
+
+
+<p alig"center"> <img src="6/beprod.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/beprod1.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/beprod2.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/production.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/feprod1.png" widthn=="700" alt="command"> </p>
+
+
+<p alig"center"> <img src="6/feprod2.png" widthn=="700" alt="command"> </p>
+
+
+check website run on https and domain
+
+
+<p alig"center"> <img src="6/feprod2.png" widthn=="700" alt="command"> </p>
+
+
+by merging and pushing to the Production branch, I ensured that the latest stable features and security patches were seamlessly deployed to the production servers. this step completes the development lifecycle, moving the application from testing to a fully operational state, accessible via the production domains with full https encryption and integrated monitoring
+
+
+## 9. Monitoring & Alerting System 
+
+
+### install node exporter
+
+
+### install prometheus
+
+
+### install
